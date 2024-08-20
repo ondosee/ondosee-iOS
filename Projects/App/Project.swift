@@ -18,7 +18,7 @@ let scripts: [TargetScript] = generateEnvironment.scripts
 let targets: [Target] = [
     .target(
         name: env.name,
-        destinations: env.destinations,
+        destinations: [.iPhone],
         product: .app,
         bundleId: "\(env.organizationName).\(env.name)",
         deploymentTargets: .iOS("16.0"),

@@ -119,6 +119,23 @@ public extension Project {
             testTargetDependencies.append(.target(name: "\(name)Testing"))
         }
 
+        // MARK: Unit Test
+        if targets.contains(.unitTest) {
+            allTargets.append(
+                Target.target(
+                    name: "\(name)Tests",
+                    destinations: destinations,
+                    product: .unitTests,
+                    bundleId: "\(env.organizationName).\(name)Tests",
+                    deploymentTargets: env.deploymentTargets,
+                    infoPlist: .default,
+                    sources: .unitTests,
+                    scripts: scripts,
+                    dependencies: testTargetDependencies + unitTestDependencies
+                )
+            )
+        }
+
         // MARK: UI Test
         if targets.contains(.uiTest) {
             allTargets.append(
