@@ -5,7 +5,13 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let configurations: [Configuration] = .default
+let configurations: [Configuration] = generateEnvironment == .ci ?
+    .default :
+    [
+        .debug(name: .dev, xcconfig: .relativeToXCConfig(type: .dev, name: env.name)),
+        .debug(name: .stage, xcconfig: .relativeToXCConfig(type: .stage, name: env.name)),
+        .release(name: .prod, xcconfig: .relativeToXCConfig(type: .prod, name: env.name))
+    ]
 
 let settings: Settings = .settings(
     base: env.baseSetting,
@@ -32,11 +38,9 @@ let targets: [Target] = [
         + [
             .core(target: .Networking),
             .target(name: "\(env.name)Widget"),
-            .target(name: "\(env.name)WatchApp")
-         ],
-        settings: .settings(
-            base: env.baseSetting
-        )
+            .target(name: "\(env.name)WatchApp"),
+        ],
+        settings: settings
     ),
     .target(
         name: "\(env.name)Widget",
@@ -52,9 +56,7 @@ let targets: [Target] = [
         dependencies: [
             .userInterface(target: .DesignSystem)
         ],
-        settings: .settings(
-            base: env.baseSetting
-        )
+        settings: settings
     ),
     .target(
         name: "\(env.name)WatchApp",
@@ -69,9 +71,7 @@ let targets: [Target] = [
         dependencies: [
             .userInterface(target: .DesignSystem)
         ],
-        settings: .settings(
-            base: env.baseSetting
-        )
+        settings: settings
     )
 ]
 

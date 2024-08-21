@@ -11,26 +11,26 @@ public extension Target {
         }
         .toTarget(with: module.targetName(type: .interface), product: .framework)
     }
-    
+
     static func interface(module: ModulePaths, dependencies: [TargetDependency] = []) -> Target {
         TargetSpec(sources: .interface, dependencies: dependencies)
             .toTarget(with: module.targetName(type: .interface), product: .framework)
     }
-    
+
     static func interface(name: String, spec: TargetSpec) -> Target {
         spec.with {
             $0.sources = .interface
         }
         .toTarget(with: "\(name)Interface", product: .framework)
     }
-    
+
     static func interface(name: String, dependencies: [TargetDependency] = []) -> Target {
         TargetSpec(sources: .interface, dependencies: dependencies)
             .toTarget(with: "\(name)Interface", product: .framework)
     }
 }
 
-// MARK: - Implements
+// MARK: Implements
 public extension Target {
     static func implements(
         module: ModulePaths,
@@ -73,7 +73,7 @@ public extension Target {
     }
 }
 
-// MARK: - Testing
+// MARK: Testing
 public extension Target {
     static func testing(module: ModulePaths, spec: TargetSpec) -> Target {
         spec.with {
@@ -131,7 +131,7 @@ public extension Target {
 public extension Target {
     static func example(module: ModulePaths, spec: TargetSpec) -> Target {
         spec.with {
-            $0.sources = .exampleSource
+            $0.sources = .exampleSources
             $0.settings = .settings(
                 base: spec.settings?.base ?? [:],
                 configurations: .default,
@@ -154,7 +154,7 @@ public extension Target {
                 "UILaunchStoryboardName": "LaunchScreen",
                 "ENABLE_TESTS": .boolean(true),
             ]),
-            sources: .exampleSource,
+            sources: .exampleSources,
             dependencies: dependencies
         )
         .toTarget(with: module.targetName(type: .example), product: .app)
@@ -162,7 +162,7 @@ public extension Target {
 
     static func example(name: String, spec: TargetSpec) -> Target {
         spec.with {
-            $0.sources = .exampleSource
+            $0.sources = .exampleSources
             $0.settings = .settings(
                 base: spec.settings?.base ?? [:],
                 configurations: .default,
@@ -185,7 +185,7 @@ public extension Target {
                 "UILaunchStoryboardName": "LaunchScreen",
                 "ENABLE_TESTS": .boolean(true),
             ]),
-            sources: .exampleSource,
+            sources: .exampleSources,
             dependencies: dependencies
         )
         .toTarget(with: "\(name)Example", product: .app)

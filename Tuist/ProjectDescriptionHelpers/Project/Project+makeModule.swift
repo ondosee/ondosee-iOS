@@ -35,8 +35,8 @@ public extension Project {
     ) -> Project {
         let scripts: [TargetScript] = generateEnvironment.scripts
         let ldFlagsSettings: SettingsDictionary = product == .framework ?
-        ["OTHER_LDFLAGS": .string("$(inherited) --all_load")] :
-        ["OTHER_LDFLAGS": .string("$(inherited")]
+        ["OTHER_LDFLAGS": .string("$(inherited) -all_load")] :
+        ["OTHER_LDFLAGS": .string("$(inherited)")]
 
         var configurations = configurations
         if configurations.isEmpty {
@@ -49,7 +49,8 @@ public extension Project {
 
         let settings: Settings = .settings(
             base: env.baseSetting
-                .merging(settings),
+                .merging(settings)
+                .merging(ldFlagsSettings),
             configurations: configurations,
             defaultSettings: .recommended
         )
@@ -69,7 +70,7 @@ public extension Project {
                     infoPlist: .default,
                     sources: .interface,
                     scripts: scripts,
-                    dependencies: internalDependencies,
+                    dependencies: interfaceDependencies,
                     additionalFiles: additionalFiles
                 )
             )
@@ -95,7 +96,7 @@ public extension Project {
         if targets.contains(.testing) && targets.contains(.interface) {
             allTargets.append(
                 Target.target(
-                    name: name,
+                    name: "\(name)Testing",
                     destinations: destinations,
                     product: .framework,
                     bundleId: "\(env.organizationName).\(name)Testing",
@@ -171,7 +172,7 @@ public extension Project {
                         "UILaunchStoryboardName": "LaunchScreen",
                         "ENABLE_TESTS": .boolean(true),
                     ]),
-                    sources: .exampleSource,
+                    sources: .exampleSources,
                     resources: ["Example/Resources/**"],
                     scripts: scripts,
                     dependencies: exampleDependencies
@@ -182,7 +183,7 @@ public extension Project {
         let schemes: [Scheme] = targets.contains(.example) ?
         [.makeScheme(target: .dev, name: name), .makeExampleScheme(target: .dev, name: name)] :
         [.makeScheme(target: .dev, name: name)]
-    
+
         return Project(
             name: name,
             organizationName: env.organizationName,
