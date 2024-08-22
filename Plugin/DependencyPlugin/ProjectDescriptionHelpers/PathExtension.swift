@@ -34,7 +34,7 @@ public extension TargetDependency {
     static func core(name: String) -> Self {
         return .project(target: name, path: .relativeToCore(name))
     }
-    static func shated(name: String) -> Self {
+    static func shared(name: String) -> Self {
         return .project(target: name, path: .relativeToShared(name))
     }
     static func userInterface(name: String) -> Self {

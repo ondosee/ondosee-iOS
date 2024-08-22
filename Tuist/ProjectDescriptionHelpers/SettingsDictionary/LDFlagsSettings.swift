@@ -2,7 +2,7 @@ import ProjectDescription
 
 public extension SettingsDictionary {
     static let ldFlages: SettingsDictionary = [
-        "OTHER_LDFLAGS": .string("$(inherited")
+        "OTHER_LDFLAGS": .string("$(inherited)")
     ]
 
     static let allLoadLDFlages: SettingsDictionary = [

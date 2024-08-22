@@ -12,7 +12,7 @@ public struct ProjectEnvironment {
 public let env = ProjectEnvironment(
     name: "ondosee",
     organizationName: "com",
-    destinations: [.iPhone, .appleWatch],
-    deploymentTargets: .multiplatform(iOS: "16.0", watchOS: "9.0"),
+    destinations: .iOS,
+    deploymentTargets: .iOS("16.0"),
     baseSetting: [:]
 )

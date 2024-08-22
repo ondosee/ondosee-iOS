@@ -1,4 +1,4 @@
-import ProjectDescription
+import Foundation
 
 protocol Configurable {
     func with(_ block: (inout Self) throws -> Void) rethrows -> Self

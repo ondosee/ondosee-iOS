@@ -22,9 +22,12 @@ let project = Project.module(
             module: .core(.Networking),
             spec: .init(
                 infoPlist: .extendingDefault(
-                    with: [:]
+                    with: [
+                        "BASE_URL": .string("$(BASE_URL)")
+                    ]
                 ),
-                dependencies: [],
+                dependencies: [
+                ],
                 settings: .settings(
                     base: env.baseSetting
                         .merging(.allLoadLDFlages),
@@ -36,7 +39,8 @@ let project = Project.module(
         .implements(
             module: .core(.Networking),
             dependencies: [
-            
+                .core(target: .Networking, type: .interface),
+                .shared(target: .GlobalThirdPartyLibrary)
             ]
         ),
         .testing(module: .core(.Networking), dependencies: [

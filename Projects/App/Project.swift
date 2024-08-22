@@ -7,40 +7,42 @@ import ProjectDescriptionHelpers
 
 let configurations: [Configuration] = .default
 
-let settings: Settings = .settings(
-    base: env.baseSetting,
-    configurations: configurations,
-    defaultSettings: .recommended
-)
+let settings: Settings =
+    .settings(
+        base: env.baseSetting,
+        configurations: configurations,
+        defaultSettings: .recommended
+    )
 
 let scripts: [TargetScript] = generateEnvironment.scripts
 
 let targets: [Target] = [
     .target(
         name: env.name,
-        destinations: env.destinations,
+        destinations: [.iPhone, .iPad],
         product: .app,
         bundleId: "\(env.organizationName).\(env.name)",
         deploymentTargets: .iOS("16.0"),
         infoPlist: .file(path: "iOS/Support/Info.plist"),
         sources: ["iOS/Sources/**"],
         resources: ["iOS/Resources/**"],
-        entitlements: .file(path: "iOS/Support/ondosee.entitlements"),
+        entitlements: "iOS/Support/ondosee.entitlements",
         scripts: scripts,
-        dependencies: ModulePaths.Feature.allCases.map { TargetDependency.feature(target: $0) } 
+        dependencies: 
+            ModulePaths.Feature.allCases.map { TargetDependency.feature(target: $0) }
         + ModulePaths.Domain.allCases.map { TargetDependency.domain(target: $0) }
-        + [
+        +
+        [
             .core(target: .Networking),
-            .target(name: "\(env.name)Widget"),
-            .target(name: "\(env.name)WatchApp")
-         ],
+            .target(name: "\(env.name)Widget")
+        ],
         settings: .settings(
             base: env.baseSetting
         )
     ),
     .target(
         name: "\(env.name)Widget",
-        destinations: [.iPhone],
+        destinations: [.iPhone, .iPad],
         product: .appExtension,
         bundleId: "\(env.organizationName).\(env.name).ondoseeWidget",
         deploymentTargets: .iOS("16.0"),
@@ -52,27 +54,8 @@ let targets: [Target] = [
         dependencies: [
             .userInterface(target: .DesignSystem)
         ],
-        settings: .settings(
-            base: env.baseSetting
-        )
+        settings: settings
     ),
-    .target(
-        name: "\(env.name)WatchApp",
-        destinations: [.appleWatch],
-        product: .app,
-        bundleId: "\(env.organizationName).\(env.name).watchkitapp",
-        deploymentTargets: .watchOS("9.0"),
-        infoPlist: .file(path: "watchOS/Support/Info.plist"),
-        sources: ["watchOS/Sources/**"],
-        resources: ["watchOS/Resources/**"],
-        scripts: scripts,
-        dependencies: [
-            .userInterface(target: .DesignSystem)
-        ],
-        settings: .settings(
-            base: env.baseSetting
-        )
-    )
 ]
 
 let schemes: [Scheme] = [

@@ -1,0 +1,89 @@
+name: ondosee-ios-ci
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "*" ]
+
+env:
+  CACHED_DEPENDENCY_PATHS: ${{ github.workspace }}/Tuist/Dependencies
+  ONDOSEE_IOS_DISCORD_WEBHOOK: ${{ secrets.ONDOSEE_IOS_DISCORD_WEBHOOK }}
+
+jobs:
+  prepare-dependency:
+    name: ⚙️ Prepare for CI
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jdx/mise-action@v2
+        with:
+          xcode-version: 15.2
+
+      - name: Install tuist
+        run: mise install tuist
+
+      - name: Compute dependency cache key
+        id: compute_hash
+        run: echo "hash=${{ hashFiles('Tuist/Package.swift') }}" >> $GITHUB_OUTPUT
+
+      - name: Check dependency cache
+        uses: actions/cache@v3
+        id: cache_dependencies
+        with:
+          path: ${{ env.CACHED_DEPENDENCY_PATHS }}
+          key: ${{ steps.compute_hash.outputs.hash }}
+
+      - name: Install dependencies
+        if: steps.cache_dependencies.outputs.cache-hit == ''
+        run: tuist install
+    outputs:
+      dependency_cache_key: ${{ steps.compute_hash.outputs.hash }}
+
+  test:
+    name: 🧪 Test
+    runs-on: macos-14
+    needs: prepare-dependency
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          xcode-version: 15.2
+      - uses: jdx/mise-action@v2
+
+      - name: Install tuist
+        run: mise install tuist
+
+      - name: Check dependency cache
+        uses: actions/cache@v3
+        id: cache_dependencies
+        with:
+          path: ${{ env.CACHED_DEPENDENCY_PATHS }}
+          key: ${{ needs.prepare-dependency.outputs.dependency_cache_key }}
+
+      - name: Install dependencies
+        if: steps.cache_dependencies.outputs.cache-hit != 'true'
+        run: tuist install
+
+      - name: Test with tuist
+        run: TUIST_ENV=CI tuist test --no-selective-testing
+
+      - name: ondosee iOS Test Success Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
+        with: 
+          title: "✅ 온도씨 iOS Test 성공 !"
+          description: "Success to test 🧩"
+          webhook: ${{ env.ONDOSEE_IOS_DISCORD_WEBHOOK }}
+          color: 0x43962A
+
+      - name: ondosee iOS Test Failed Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with: 
+          title: "❌ 온도씨 iOS Test 실패 .."
+          description: "Failed to test 🥺"
+          webhook: ${{ env.ONDOSEE_IOS_DISCORD_WEBHOOK }}
+          color: 0xBB3639
+

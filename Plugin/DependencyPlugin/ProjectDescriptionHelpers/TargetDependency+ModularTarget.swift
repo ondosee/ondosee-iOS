@@ -21,7 +21,7 @@ public extension TargetDependency {
             path: .relativeToDomain(target.rawValue)
         )
     }
-    
+
     static func core(
         target: ModulePaths.Core,
         type: ModularTargetType = .sources
@@ -31,7 +31,7 @@ public extension TargetDependency {
             path: .relativeToCore(target.rawValue)
         )
     }
-    
+
     static func shared(
         target: ModulePaths.Shared,
         type: ModularTargetType = .sources
@@ -41,7 +41,7 @@ public extension TargetDependency {
             path: .relativeToShared(target.rawValue)
         )
     }
-    
+
     static func userInterface(
         target: ModulePaths.UserInterface,
         type: ModularTargetType = .sources

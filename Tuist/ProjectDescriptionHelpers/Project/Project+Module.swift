@@ -22,7 +22,7 @@ public extension Project {
             settings: settings,
             targets: targets,
             schemes: targets.contains { $0.product == .app } ?
-                [.makeScheme(target: .dev, name: name), .makeScheme(target: .dev, name: name)] :
+                [.makeScheme(target: .dev, name: name), .makeExampleScheme(target: .dev, name: name)] :
                 [.makeScheme(target: .dev, name: name)],
             fileHeaderTemplate: fileHeaderTemplate,
             additionalFiles: additionalFiles,
