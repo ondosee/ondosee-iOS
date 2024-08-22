@@ -13,10 +13,13 @@ let project = Project.module(
         .implements(
             module: .domain(.BaseDomain),
             dependencies: [
-                .domain(target: .BaseDomain, type: .interface)
+                .domain(target: .BaseDomain, type: .interface),
+                .core(target: .Networking, type: .interface),
+                .shared(target: .GlobalThirdPartyLibrary)
             ]
         ),
         .tests(module: .domain(.BaseDomain), dependencies: [
+            .domain(target: .BaseDomain)
         ])
     ]
 )

@@ -127,13 +127,14 @@ public extension Target {
     }
 }
 
-// MARK: - Example
+// MARK: Example
 public extension Target {
     static func example(module: ModulePaths, spec: TargetSpec) -> Target {
         spec.with {
             $0.sources = .exampleSources
             $0.settings = .settings(
-                base: spec.settings?.base ?? [:],
+                base: (spec.settings?.base ?? [:])
+                    .merging(["OTHER_LDFLAGS": "$(inherited) -Xlinker -interposable"]),
                 configurations: .default,
                 defaultSettings: spec.settings?.defaultSettings ?? .recommended
             )
@@ -155,7 +156,11 @@ public extension Target {
                 "ENABLE_TESTS": .boolean(true),
             ]),
             sources: .exampleSources,
-            dependencies: dependencies
+            dependencies: dependencies,
+            settings: .settings(
+                base: ["OTHER_LDFLAGS": "$(inherited) -Xlinker -interposable"],
+                configurations: .default
+            )
         )
         .toTarget(with: module.targetName(type: .example), product: .app)
     }
@@ -164,7 +169,8 @@ public extension Target {
         spec.with {
             $0.sources = .exampleSources
             $0.settings = .settings(
-                base: spec.settings?.base ?? [:],
+                base: (spec.settings?.base ?? [:])
+                    .merging(["OTHER_LDFLAGS": "$(inherited) -Xlinker -interposable"]),
                 configurations: .default,
                 defaultSettings: spec.settings?.defaultSettings ?? .recommended
             )
@@ -186,7 +192,11 @@ public extension Target {
                 "ENABLE_TESTS": .boolean(true),
             ]),
             sources: .exampleSources,
-            dependencies: dependencies
+            dependencies: dependencies,
+            settings: .settings(
+                base: ["OTHER_LDFLAGS": "$(inherited) -Xlinker -interposable"],
+                configurations: .default
+            )
         )
         .toTarget(with: "\(name)Example", product: .app)
     }

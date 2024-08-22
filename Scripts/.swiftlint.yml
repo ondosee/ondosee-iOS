@@ -1,7 +1,7 @@
 excluded:
   - fastlane
   - Dependencies
-  - Carthage
+  - ondosee
 
 disabled_rules:
   - void_function_in_ternary

@@ -19,12 +19,10 @@ public struct TargetSpec: Configurable {
     public var dependencies: [TargetDependency]
     public var settings: Settings?
     public var coreDataModels: [CoreDataModel]
-    public var environmentVariables: [String: EnvironmentVariable]
+    public var environment: [String: EnvironmentVariable]
     public var launchArguments: [LaunchArgument]
     public var additionalFiles: [FileElement]
     public var buildRules: [BuildRule]
-    public var mergedBinaryType: MergedBinaryType
-    public var mergeable: Bool
 
     public init(
         name: String = "",
@@ -43,12 +41,10 @@ public struct TargetSpec: Configurable {
         dependencies: [TargetDependency] = [],
         settings: Settings? = nil,
         coreDataModels: [CoreDataModel] = [],
-        environmentVariables: [String: EnvironmentVariable] = [:],
+        environment: [String: EnvironmentVariable] = [:],
         launchArguments: [LaunchArgument] = [],
         additionalFiles: [FileElement] = [],
-        buildRules: [BuildRule] = [],
-        mergedBinaryType: MergedBinaryType = .disabled,
-        mergeable: Bool = false
+        buildRules: [BuildRule] = []
     ) {
         self.name = name
         self.destinations = destinations
@@ -66,12 +62,10 @@ public struct TargetSpec: Configurable {
         self.dependencies = dependencies
         self.settings = settings
         self.coreDataModels = coreDataModels
-        self.environmentVariables = environmentVariables
+        self.environment = environment
         self.launchArguments = launchArguments
         self.additionalFiles = additionalFiles
         self.buildRules = buildRules
-        self.mergedBinaryType = mergedBinaryType
-        self.mergeable = mergeable
     }
 
     func toTarget() -> Target {
@@ -79,7 +73,7 @@ public struct TargetSpec: Configurable {
     }
 
     func toTarget(with name: String, product: Product? = nil) -> Target {
-        Target.target(
+        .target(
             name: name,
             destinations: destinations,
             product: product ?? self.product,
@@ -101,12 +95,10 @@ public struct TargetSpec: Configurable {
                 defaultSettings: .recommended
             ),
             coreDataModels: coreDataModels,
-            environmentVariables: environmentVariables,
+            environmentVariables: environment,
             launchArguments: launchArguments,
             additionalFiles: additionalFiles,
-            buildRules: buildRules,
-            mergedBinaryType: mergedBinaryType,
-            mergeable: mergeable
+            buildRules: buildRules
         )
     }
 }

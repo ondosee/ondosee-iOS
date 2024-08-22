@@ -9,13 +9,16 @@ let project = Project.module(
             module: .userInterface(.DesignSystem),
             product: .framework,
             spec: .init(
-            resources: ["Resources/**"],
-            dependencies: []
+                resources: ["Resources/**"],
+                dependencies: [
+                    .shared(target: .GlobalThirdPartyLibrary)
+                ]
             )
         ),
         .example(module: .userInterface(.DesignSystem), dependencies: [
             .userInterface(target: .DesignSystem)
         ])
     ],
-    resourceSynthesizers: .default
+    resourceSynthesizers: .default + [
+    ]
 )

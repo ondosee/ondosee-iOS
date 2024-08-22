@@ -29,9 +29,10 @@ public extension Project {
         sources: SourceFilesList = .sources,
         resources: ResourceFileElements? = nil,
         settings: SettingsDictionary = [:],
-        additionalPlistRows: [String: ProjectDescription.Plist.Value] = [:],
+        additionalPlistRows: [String: Plist.Value] = [:],
         additionalFiles: [FileElement] = [],
-        configurations: [Configuration] = []
+        configurations: [Configuration] = [],
+        resourceSynthesizers: [ResourceSynthesizer] = .default
     ) -> Project {
         let scripts: [TargetScript] = generateEnvironment.scripts
         let ldFlagsSettings: SettingsDictionary = product == .framework ?
@@ -40,11 +41,7 @@ public extension Project {
 
         var configurations = configurations
         if configurations.isEmpty {
-            configurations = [
-                .debug(name: .dev, xcconfig: .shared),
-                .debug(name: .stage, xcconfig: .shared),
-                .release(name: .prod, xcconfig: .shared)
-            ]
+            configurations = .default
         }
 
         let settings: Settings = .settings(
@@ -61,7 +58,7 @@ public extension Project {
         if targets.contains(.interface) {
             dependencies.append(.target(name: "\(name)Interface"))
             allTargets.append(
-                Target.target(
+                .target(
                     name: "\(name)Interface",
                     destinations: destinations,
                     product: .framework,
@@ -78,7 +75,7 @@ public extension Project {
 
         // MARK: Sources
         allTargets.append(
-            Target.target(
+            .target(
                 name: name,
                 destinations: destinations,
                 product: product,
@@ -95,7 +92,7 @@ public extension Project {
         // MARK: Testing
         if targets.contains(.testing) && targets.contains(.interface) {
             allTargets.append(
-                Target.target(
+                .target(
                     name: "\(name)Testing",
                     destinations: destinations,
                     product: .framework,
@@ -123,7 +120,7 @@ public extension Project {
         // MARK: Unit Test
         if targets.contains(.unitTest) {
             allTargets.append(
-                Target.target(
+                .target(
                     name: "\(name)Tests",
                     destinations: destinations,
                     product: .unitTests,
@@ -140,7 +137,7 @@ public extension Project {
         // MARK: UI Test
         if targets.contains(.uiTest) {
             allTargets.append(
-                Target.target(
+                .target(
                     name: "\(name)UITests",
                     destinations: destinations,
                     product: .uiTests,
@@ -161,8 +158,8 @@ public extension Project {
                 exampleDependencies.append(.target(name: "\(name)Testing"))
             }
             allTargets.append(
-                Target.target(
-                    name: "\(name)ExampleApp",
+                .target(
+                    name: "\(name)Example",
                     destinations: destinations,
                     product: .app,
                     bundleId: "\(env.organizationName).\(name)ExampleApp",
@@ -190,7 +187,8 @@ public extension Project {
             packages: packages,
             settings: settings,
             targets: allTargets,
-            schemes: schemes
+            schemes: schemes,
+            resourceSynthesizers: resourceSynthesizers
         )
     }
 }

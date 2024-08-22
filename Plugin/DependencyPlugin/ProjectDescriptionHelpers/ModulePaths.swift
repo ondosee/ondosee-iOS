@@ -1,6 +1,5 @@
 import Foundation
 
-// swiftlint: disable all
 public enum ModulePaths {
     case feature(Feature)
     case domain(Domain)
