@@ -19,26 +19,43 @@ let scripts: [TargetScript] = generateEnvironment.scripts
 let targets: [Target] = [
     .target(
         name: env.name,
-        destinations: env.destinations,
+        destinations: [.iPhone, .iPad],
         product: .app,
         bundleId: "\(env.organizationName).\(env.name)",
-        deploymentTargets: env.deploymentTargets,
-        infoPlist: .file(path: "Support/Info.plist"),
-        sources: ["Sources/**"],
-        resources: ["Resources/**"],
-        entitlements: "Support/ondosee.entitlements",
+        deploymentTargets: .iOS("16.0"),
+        infoPlist: .file(path: "iOS/Support/Info.plist"),
+        sources: ["iOS/Sources/**"],
+        resources: ["iOS/Resources/**"],
+        entitlements: "iOS/Support/ondosee.entitlements",
         scripts: scripts,
         dependencies: 
             ModulePaths.Feature.allCases.map { TargetDependency.feature(target: $0) }
-            + ModulePaths.Domain.allCases.map { TargetDependency.domain(target: $0) }
-            + 
+        + ModulePaths.Domain.allCases.map { TargetDependency.domain(target: $0) }
+        +
         [
-                .core(target: .Networking)
-            ],
+            .core(target: .Networking),
+            .target(name: "\(env.name)Widget")
+        ],
         settings: .settings(
             base: env.baseSetting
         )
-    )
+    ),
+    .target(
+        name: "\(env.name)Widget",
+        destinations: [.iPhone, .iPad],
+        product: .appExtension,
+        bundleId: "\(env.organizationName).\(env.name).ondoseeWidget",
+        deploymentTargets: .iOS("16.0"),
+        infoPlist: .file(path: "iOS-Widget/Support/Info.plist"),
+        sources: ["iOS-Widget/Sources/**"],
+        resources: ["iOS-Widget/Resources/**"],
+        entitlements: .file(path: "iOS-Widget/Support/ondoseeWidget.entitlements"),
+        scripts: scripts,
+        dependencies: [
+            .userInterface(target: .DesignSystem)
+        ],
+        settings: settings
+    ),
 ]
 
 let schemes: [Scheme] = [
