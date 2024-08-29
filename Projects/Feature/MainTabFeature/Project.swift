@@ -8,7 +8,8 @@ let project = Project.module(
         .implements(module: .feature(.MainTabFeature), dependencies: [
             .feature(target: .BaseFeature),
             .feature(target: .MainFeature),
-            .feature(target: .WeeklyForecastFeature)
+            .feature(target: .WeeklyForecastFeature),
+            .feature(target: .SettingFeature)
         ]),
         .tests(module: .feature(.MainTabFeature), dependencies: [])
     ]
