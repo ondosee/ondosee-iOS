@@ -24,6 +24,7 @@ extension ModulePaths: ModularTargetPathConvertable {
 public extension ModulePaths {
     enum Feature: String, ModularTargetPathConvertable {
         case BaseFeature
+        case MainTabFeature
     }
 }
 
