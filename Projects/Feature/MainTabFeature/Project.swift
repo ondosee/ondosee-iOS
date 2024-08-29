@@ -1,8 +1,13 @@
-//
-//  Project.swift
-//  AppManifests
-//
-//  Created by 정윤서 on 8/29/24.
-//
+import DependencyPlugin
+import ProjectDescription
+import ProjectDescriptionHelpers
 
-import Foundation
+let project = Project.module(
+    name: ModulePaths.Feature.MainTabFeature.rawValue,
+    targets: [
+        .implements(module: .feature(.MainTabFeature), dependencies: [
+            .feature(target: .BaseFeature)
+        ]),
+        .tests(module: .feature(.MainTabFeature), dependencies: [])
+    ]
+)
