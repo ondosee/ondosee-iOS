@@ -11,7 +11,8 @@ let project = Project.module(
             spec: .init(
                 resources: ["Resources/**"],
                 dependencies: [
-                    .shared(target: .GlobalThirdPartyLibrary)
+                    .shared(target: .GlobalThirdPartyLibrary),
+                    .SPM.Lottieg
                 ]
             )
         ),
