@@ -18,6 +18,7 @@ import PackageDescription
 let package = Package(
     name: "OndoseeIOS",
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.14.0")
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.14.0"),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.9.1"))
     ]
 )
