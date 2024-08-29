@@ -3,13 +3,15 @@ import PackageDescription
 
 #if TUIST
     import ProjectDescription
+    import ProjectDescriptionHelpers
 
     let packageSettings = PackageSettings(
         productTypes: [:],
         baseSettings: .settings(
             configurations: [
-                .debug(name: .debug),
-                .release(name: .release)
+                .debug(name: .dev),
+                .debug(name: .stage),
+                .release(name: .prod)
             ]
         )
     )
