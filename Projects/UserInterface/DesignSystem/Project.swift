@@ -12,7 +12,7 @@ let project = Project.module(
                 resources: ["Resources/**"],
                 dependencies: [
                     .shared(target: .GlobalThirdPartyLibrary),
-                    .SPM.Lottieg
+                    .SPM.Lottie
                 ]
             )
         ),

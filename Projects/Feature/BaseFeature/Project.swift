@@ -11,7 +11,8 @@ let project = Project.module(
             .feature(target: .BaseFeature, type: .interface),
             .userInterface(target: .DesignSystem),
             .shared(target: .GlobalThirdPartyLibrary),
-            .SPM.ComposableArchitecture
+            .SPM.ComposableArchitecture,
+            .SPM.Swinject
         ]),
         .tests(module: .feature(.BaseFeature), dependencies: [
             .feature(target: .BaseFeature)
