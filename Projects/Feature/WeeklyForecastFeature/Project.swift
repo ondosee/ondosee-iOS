@@ -1,8 +1,18 @@
-//
-//  Project.swift
-//  AppManifests
-//
-//  Created by 정윤서 on 8/29/24.
-//
+import DependencyPlugin
+import ProjectDescription
+import ProjectDescriptionHelpers
 
-import Foundation
+let project = Project.module(
+    name: ModulePaths.Feature.WeeklyForecastFeature.rawValue,
+    targets: [
+        .implements(module: .feature(.WeeklyForecastFeature), dependencies: [
+            .feature(target: .BaseFeature)
+        ]),
+        .tests(module: .feature(.WeeklyForecastFeature), dependencies: [
+            .feature(target: .WeeklyForecastFeature)
+        ]),
+        .example(module: .feature(.WeeklyForecastFeature), dependencies: [
+            .feature(target: .WeeklyForecastFeature)
+        ])
+    ]
+)
