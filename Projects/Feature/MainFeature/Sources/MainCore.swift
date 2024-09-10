@@ -1,9 +1,11 @@
 import ComposableArchitecture
 import Foundation
+import DesignSystem
 
 public struct MainCore: Reducer {
     public init() {}
     public struct State: Equatable {
+        var weatherType: BackgroundType = .clear
         public init() {}
     }
 

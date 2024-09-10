@@ -10,6 +10,17 @@ public struct MainView: View {
     }
 
     public var body: some View {
-        Text("Main View")
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: viewStore.state.weatherType.toColors()
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+            .ignoresSafeArea()
+        }
     }
 }

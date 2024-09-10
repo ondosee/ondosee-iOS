@@ -10,46 +10,57 @@ public struct MainTabView: View {
 
     public init(store: StoreOf<MainTabCore>) {
         self.store = store
+        UITabBar.appearance().backgroundColor = .clear
+        UITabBar.appearance().scrollEdgeAppearance = .init()
     }
 
     public var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            TabView {
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            TabView(selection: viewStore.binding(
+                get: \.tabFlow,
+                send: MainTabCore.Action.changeTabFlow
+            )) {
                 MainView(store: store.scope(
-                    state: \.mainCore,
-                    action: MainTabCore.Action.mainCore)
-                )
+                        state: \.mainCore,
+                        action: MainTabCore.Action.mainCore
+                ))
                 .tag(TabFlow.main)
                 .tabItem {
-                    ODIcon(.home)
-
-                    Text("대시보드")
-                        .font(.medium(.system, size: .text3))
+                    tabBarItem(.home, text: "대시보드")
                 }
 
                 WeeklyForecastView(store: store.scope(
                     state: \.weeklyCore,
-                    action: MainTabCore.Action.weeklyCore))
+                    action: MainTabCore.Action.weeklyCore
+                ))
                 .tag(TabFlow.weekly)
                 .tabItem {
-                    ODIcon(.calendar)
-
-                    Text("주간 예보")
-                        .font(.medium(.system, size: .text3))
+                    tabBarItem(.calendar, text: "주간 예보")
                 }
 
                 SettingView(store: store.scope(
                     state: \.settingCore,
-                    action: MainTabCore.Action.settingCore)
-                )
+                    action: MainTabCore.Action.settingCore
+                ))
                 .tag(TabFlow.setting)
                 .tabItem {
-                    ODIcon(.setting)
-
-                    Text("설정")
-                        .font(.medium(.system, size: .text3))
+                    tabBarItem(.setting, text: "설정")
                 }
             }
+            .accentColor(.ondosee(.system(.selected)))
+        }
+    }
+
+    @ViewBuilder
+    func tabBarItem(
+        _ icon: ODIcon.Icon,
+        text: String
+    ) -> some View {
+        VStack(spacing: 4) {
+            ODIcon(icon)
+
+            Text(text)
+                .font(.medium(.system, size: .text3))
         }
     }
 }
