@@ -6,28 +6,26 @@ import WeeklyForecastFeature
 public struct MainTabCore: Reducer {
     public init() {}
     public struct State: Equatable {
-        public var tabFlow: TabFlow = .main
-        public var mainCore = MainCore.State()
-        public var weeklyCore = WeeklyForecastCore.State()
-        public var settingCore = SettingCore.State()
+        var mainCore: MainCore.State
+        var weeklyCore: WeeklyForecastCore.State
+        var settingCore: SettingCore.State
 
-        public init() {}
+        public init() { self = .init() }
     }
 
-    public enum Action: Equatable {
+    public enum Action {
         case changeTabFlow(TabFlow)
         case mainCore(MainCore.Action)
         case weeklyCore(WeeklyForecastCore.Action)
         case settingCore(SettingCore.Action)
     }
 
-    public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        switch action {
-        case let .changeTabFlow(flow):
-            state.tabFlow = flow
-            return .none
-
-        default:
+    public var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            default:
+                return .none
+            }
             return .none
         }
     }

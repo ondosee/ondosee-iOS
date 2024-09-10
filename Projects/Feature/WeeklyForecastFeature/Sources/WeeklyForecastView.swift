@@ -9,17 +9,6 @@ public struct WeeklyForecastView: View {
     }
 
     public var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
-            ZStack {
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: viewStore.state.weatherType.toColors()
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
-            .ignoresSafeArea()
-        }
+        Text("Weekly")
     }
 }
