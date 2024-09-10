@@ -28,6 +28,7 @@ public extension ModulePaths {
         case MainFeature
         case WeeklyForecastFeature
         case SettingFeature
+        case RootFeature
     }
 }
 
