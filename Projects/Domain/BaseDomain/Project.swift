@@ -15,7 +15,8 @@ let project = Project.module(
             dependencies: [
                 .domain(target: .BaseDomain, type: .interface),
                 .core(target: .Networking, type: .interface),
-                .shared(target: .GlobalThirdPartyLibrary)
+                .shared(target: .GlobalThirdPartyLibrary),
+                .SPM.Alamofire
             ]
         ),
         .tests(module: .domain(.BaseDomain), dependencies: [

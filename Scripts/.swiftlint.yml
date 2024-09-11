@@ -2,6 +2,9 @@ excluded:
   - fastlane
   - Dependencies
   - ondosee
+  - Tuist
+  - Plugin
+  - Scripts
 
 disabled_rules:
   - void_function_in_ternary

@@ -33,29 +33,12 @@ let targets: [Target] = [
         + ModulePaths.Domain.allCases.map { TargetDependency.domain(target: $0) }
         +
         [
-            .core(target: .Networking),
-            .target(name: "\(env.name)Widget")
+            .core(target: .Networking)
         ],
         settings: .settings(
             base: env.baseSetting
         )
-    ),
-    .target(
-        name: "\(env.name)Widget",
-        destinations: [.iPhone, .iPad],
-        product: .appExtension,
-        bundleId: "\(env.organizationName).\(env.name).ondoseeWidget",
-        deploymentTargets: .iOS("16.0"),
-        infoPlist: .file(path: "iOS-Widget/Support/Info.plist"),
-        sources: ["iOS-Widget/Sources/**"],
-        resources: ["iOS-Widget/Resources/**"],
-        entitlements: .file(path: "iOS-Widget/Support/ondoseeWidget.entitlements"),
-        scripts: scripts,
-        dependencies: [
-            .userInterface(target: .DesignSystem)
-        ],
-        settings: settings
-    ),
+    )
 ]
 
 let schemes: [Scheme] = [

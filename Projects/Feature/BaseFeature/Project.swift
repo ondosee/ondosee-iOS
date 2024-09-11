@@ -10,7 +10,8 @@ let project = Project.module(
         .implements(module: .feature(.BaseFeature), product: .framework, dependencies: [
             .feature(target: .BaseFeature, type: .interface),
             .userInterface(target: .DesignSystem),
-            .shared(target: .GlobalThirdPartyLibrary)
+            .shared(target: .GlobalThirdPartyLibrary),
+            .SPM.ComposableArchitecture
         ]),
         .tests(module: .feature(.BaseFeature), dependencies: [
             .feature(target: .BaseFeature)

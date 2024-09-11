@@ -7,6 +7,7 @@ public extension Color.OndoseeColorSystem {
         case secondary
         case tertiary
         case warning
+        case selected
     }
 }
 
@@ -18,6 +19,7 @@ public extension Color.OndoseeColorSystem.System {
         case .secondary: return DesignSystemAsset.System.secondary.swiftUIColor
         case .tertiary: return DesignSystemAsset.System.tertiary.swiftUIColor
         case .warning: return DesignSystemAsset.System.warning.swiftUIColor
+        case .selected: return DesignSystemAsset.System.selected.swiftUIColor
         }
     }
 }
