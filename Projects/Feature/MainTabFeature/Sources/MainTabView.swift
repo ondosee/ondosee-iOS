@@ -10,11 +10,16 @@ public struct MainTabView: View {
 
     public init(store: StoreOf<MainTabCore>) {
         self.store = store
+        UITabBar.appearance().backgroundColor = .clear
+        UITabBar.appearance().scrollEdgeAppearance = .init()
     }
 
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            TabView {
+            TabView(selection: viewStore.binding(
+                    get: \.tabFlow,
+                    send: MainTabCore.Action.changeTabFlow)
+            ) {
                 MainView(store: store.scope(
                     state: \.mainCore,
                     action: MainTabCore.Action.mainCore)
@@ -50,6 +55,7 @@ public struct MainTabView: View {
                         .font(.medium(.system, size: .text3))
                 }
             }
+            .accentColor(.ondosee(.system(.selected)))
         }
     }
 }
